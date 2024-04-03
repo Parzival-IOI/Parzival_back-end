@@ -1,6 +1,6 @@
-#Parzival Back-end Using Spring Boot With MongoDB
-** This back-end will be used for : **
+#Parzival Back-end Using Spring Boot With MongoDB</br>
+* __This back-end will be used for :__
 ```
-Portfolio
-Admin Panel using Next14 JS
+1. Portfolio
+2. Admin Panel using Next14 JS
 ```
