@@ -1,6 +1,5 @@
 package com.parzival_backend.Parzival.Project;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +21,7 @@ public class ProjectController {
     private final ProjectService projectService;
 
     @GetMapping("/")
-    public List<ResponseDto> index() throws Exception {
+    public List<ResponseDto> index() {
         try {
             List<ResponseDto> responseDtos = projectService.index();
 

@@ -1,5 +1,6 @@
 package com.parzival_backend.Parzival.Home;
 
+import java.security.Principal;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HomeController {
     @GetMapping("/")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public String index() {
-        return "Hello";
+    public String index(Principal principal) {
+        return "Hello " + principal.getName();
     }
 }
