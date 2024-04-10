@@ -18,21 +18,29 @@ public class ProjectService {
     public List<ResponseDto> index() throws Exception {
         List<ProjectModel> projectModels = this.projectRepository.findAll();
         List<ResponseDto> responseDtos = new ArrayList<>();
-        for(ProjectModel projectModel : projectModels) {
-            responseDtos.add(new ResponseDto(
-                    projectModel.getId(),
-                    projectModel.getTitle(),
-                    projectModel.getLanguage(),
-                    projectModel.getDescription(),
-                    projectModel.getLink(),
-                    projectModel.getImage()
-            ));
-        }
-        return responseDtos;
+
+        return projectModels.stream().map(this::responseDtoIndex).toList();
     }
 
-    public Optional<ProjectModel> show(String id) {
-        return this.projectRepository.findById(id);
+    private ResponseDto responseDtoIndex(ProjectModel projectModel) {
+        return ResponseDto.builder()
+                .id(projectModel.getId())
+                .title(projectModel.getTitle())
+                .description(projectModel.getDescription())
+                .image(projectModel.getImage())
+                .link(projectModel.getLink())
+                .build();
+    }
+
+    public Optional<ResponseDto> show(String id) {
+        Optional<ProjectModel> projectModel = this.projectRepository.findById(id);
+        return projectModel.map(model -> ResponseDto.builder()
+                .id(model.getId())
+                .title(model.getTitle())
+                .description(model.getDescription())
+                .image(model.getImage())
+                .link(model.getLink())
+                .build());
     }
 
     public void create(RequestDto requestDto) {

@@ -1,25 +1,28 @@
 package com.parzival_backend.Parzival.Authentication;
 
 
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class AuthController {
-    private static final Logger LOG = LoggerFactory.getLogger(AuthController.class);
-
     private final TokenService tokenService;
+    private final AuthenticationManager authenticationManager;
 
     @PostMapping("/token")
-    public String token(Authentication authentication) {
-        LOG.debug("Token Request User {}", authentication.getName());
+    public String token(@RequestBody LoginRequest loginRequest) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.username(), loginRequest.password()));
         String token = tokenService.generateToken(authentication);
-        LOG.debug("Token Response User {}", token);
+        log.info(token);
         return token;
     }
 }

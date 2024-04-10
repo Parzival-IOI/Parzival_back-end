@@ -23,9 +23,7 @@ public class ProjectController {
     @GetMapping("/")
     public List<ResponseDto> index() {
         try {
-            List<ResponseDto> responseDtos = projectService.index();
-
-            return responseDtos;
+            return projectService.index();
         } catch (Exception ex) {
             throw new ResponseStatusException(
                     HttpStatus.INTERNAL_SERVER_ERROR,
@@ -36,7 +34,7 @@ public class ProjectController {
     }
 
     @GetMapping("/show/{id}")
-    public Optional<ProjectModel> show(@PathVariable("id") String id) {
+    public Optional<ResponseDto> show(@PathVariable("id") String id) {
         return projectService.show(id);
     }
 
