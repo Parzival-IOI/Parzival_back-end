@@ -1,9 +1,14 @@
 package com.parzival_backend.Parzival.Project;
 
+import com.parzival_backend.Parzival.User.Role;
+import com.parzival_backend.Parzival.User.UserController;
+import com.parzival_backend.Parzival.User.UserModel;
+import com.parzival_backend.Parzival.User.UserRepository;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +24,7 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 public class ProjectController {
     private final ProjectService projectService;
+    private final UserRepository userRepository;
 
     @GetMapping("/")
     public List<ResponseDto> index() {

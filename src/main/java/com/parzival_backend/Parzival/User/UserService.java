@@ -22,18 +22,20 @@ public class UserService  implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) {
         Optional<UserModel> userModel = userRepository.findUserByUsername(username);
         log.info(username);
+        log.info(userModel.isPresent() ? String.valueOf(userModel.get().getRole()) : "null");
+        String encodedPassword = new BCryptPasswordEncoder().encode("password");
         return userModel.map(model -> org.springframework.security.core.userdetails.User.builder()
                 .username(model.getUsername())
                 .password(model.getPassword())
                 .roles(String.valueOf(model.getRole())) // Replace with appropriate roles from userDetails if available
                 .build()).orElseGet(() -> org.springframework.security.core.userdetails.User.builder()
                 .username("Parzival")
-                .password("$2a$12$spcxBSLMNIKYr87ZcLDQ2u6w4qgaR.5XY.fhvvvCdy2vFFCHMBYsy")
-                .roles("ADMIN") // Replace with appropriate roles from userDetails if available
+                .password(encodedPassword)
+                .roles(String.valueOf(Role.ADMIN)) // Replace with appropriate roles from userDetails if available
                 .build());
-        // Create and return the Spring Security UserDetails object
     }
-    public void createUser(UserModel userModel){
+    public void createUser(UserDto userDto){
+        UserModel userModel = new UserModel(userDto);
         String encodedPassword = new BCryptPasswordEncoder().encode(userModel.getPassword());
         userModel.setPassword(encodedPassword);
         userRepository.save(userModel);

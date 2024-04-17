@@ -9,7 +9,7 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-@Document(value = "Projects")
+@Document(value = "Users")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -23,4 +23,10 @@ public class UserModel {
     private String password;
     @Field(name="role")
     private Role role;
+
+    UserModel (UserDto userDto) {
+        this.username = userDto.getUsername();
+        this.password = userDto.getPassword();
+        this.role = userDto.getRole();
+    }
 }

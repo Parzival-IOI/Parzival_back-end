@@ -7,6 +7,7 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import com.parzival_backend.Parzival.User.Role;
 import com.parzival_backend.Parzival.User.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +43,7 @@ public class SecurityConfig {
     private final RsaKeyProperties rsaKeyProperties;
     private final UserService userService;
 
+// using login without database
 //    @Bean
 //    public InMemoryUserDetailsManager user() {
 //        return new InMemoryUserDetailsManager(
@@ -51,9 +53,9 @@ public class SecurityConfig {
 //                        .build()
 //        );
 //    }
-//
+// implementing login with post method
 //    @Bean
-//    AuthenticationManager authenticationManager(UserDetailsService userDetailsService) {
+//    public AuthenticationManager authenticationManager(UserDetailsService userDetailsService) {
 //        var authProvider = new DaoAuthenticationProvider();
 //        authProvider.setUserDetailsService(userDetailsService);
 //        return new ProviderManager(authProvider);
@@ -77,6 +79,7 @@ public class SecurityConfig {
         AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
         return http
                 .csrf(AbstractHttpConfigurer::disable)
+                .authenticationManager(authenticationManager)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/token").permitAll()
                         .anyRequest().authenticated())
@@ -85,8 +88,6 @@ public class SecurityConfig {
                 .oauth2ResourceServer((oauth2) -> oauth2
                         .jwt(Customizer.withDefaults())
                 )
-                .authenticationManager(authenticationManager)
-                .httpBasic(Customizer.withDefaults())
                 .build();
     }
 
