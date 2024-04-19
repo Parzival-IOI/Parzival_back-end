@@ -82,6 +82,7 @@ public class SecurityConfig {
                 .authenticationManager(authenticationManager)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/token").permitAll()
+                        .requestMatchers("/api/user/create").hasRole(String.valueOf(Role.ADMIN))
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

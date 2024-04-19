@@ -1,7 +1,6 @@
 package com.parzival_backend.Parzival.User;
 
 import java.util.Optional;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
@@ -15,7 +14,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @EnableMongoRepositories(basePackages = "com.parzival_backend.Parzival.User")
 @Slf4j
-public class UserService  implements UserDetailsService {
+public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
@@ -27,11 +26,11 @@ public class UserService  implements UserDetailsService {
         return userModel.map(model -> org.springframework.security.core.userdetails.User.builder()
                 .username(model.getUsername())
                 .password(model.getPassword())
-                .roles(String.valueOf(model.getRole())) // Replace with appropriate roles from userDetails if available
+                .roles(String.valueOf(model.getRole()))
                 .build()).orElseGet(() -> org.springframework.security.core.userdetails.User.builder()
                 .username("Parzival")
                 .password(encodedPassword)
-                .roles(String.valueOf(Role.ADMIN)) // Replace with appropriate roles from userDetails if available
+                .roles(String.valueOf(Role.ADMIN))
                 .build());
     }
     public void createUser(UserDto userDto){
