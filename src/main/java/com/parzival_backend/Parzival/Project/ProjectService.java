@@ -1,6 +1,5 @@
 package com.parzival_backend.Parzival.Project;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +14,8 @@ import org.springframework.stereotype.Service;
 public class ProjectService {
     private final ProjectRepository projectRepository;
 
-    public List<ResponseDto> index() throws Exception {
+    public List<ResponseDto> index() {
         List<ProjectModel> projectModels = this.projectRepository.findAll();
-        List<ResponseDto> responseDtos = new ArrayList<>();
-
         return projectModels.stream().map(this::responseDtoIndex).toList();
     }
 
