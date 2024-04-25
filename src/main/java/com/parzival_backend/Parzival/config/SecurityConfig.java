@@ -58,7 +58,6 @@ public class SecurityConfig {
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder());
         AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
-        log.info(String.valueOf(Role.ADMIN));
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authenticationManager(authenticationManager)
@@ -79,7 +78,8 @@ public class SecurityConfig {
     static class CustomAuthenticationConverter implements Converter<Jwt, AbstractAuthenticationToken> {
         public AbstractAuthenticationToken convert(Jwt jwt) {
             Collection<String> authorities = jwt.getClaimAsStringList("role");
-            log.info(String.valueOf(jwt.getClaimAsStringList("role")));
+            String Login = "Login : " + jwt.getSubject() + " " + jwt.getClaimAsStringList("role");
+            log.info(Login);
             if(authorities == null || authorities.isEmpty()) {
                 return new JwtAuthenticationToken(jwt);
             }

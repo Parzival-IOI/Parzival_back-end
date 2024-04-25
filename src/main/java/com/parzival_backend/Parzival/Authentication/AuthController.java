@@ -1,7 +1,6 @@
 package com.parzival_backend.Parzival.Authentication;
 
 
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,8 +20,6 @@ public class AuthController {
     @PostMapping("/token")
     public String token(@RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.username(), loginRequest.password()));
-        String token = tokenService.generateToken(authentication);
-        log.info(token);
-        return token;
+        return tokenService.generateToken(authentication);
     }
 }

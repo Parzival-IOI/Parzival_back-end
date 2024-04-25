@@ -22,7 +22,6 @@ public class TokenService {
         String role = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(" "));
-        log.info(role);
         JwtClaimsSet claimsSet = JwtClaimsSet.builder()
                 .issuer("self")
                 .issuedAt(now)
@@ -30,7 +29,10 @@ public class TokenService {
                 .subject(authentication.getName())
                 .claim("role", role)
                 .build();
-        return this.jwtEncoder.encode(JwtEncoderParameters.from(claimsSet)).getTokenValue();
+        String generatedToken = this.jwtEncoder.encode(JwtEncoderParameters.from(claimsSet)).getTokenValue();
+        String createdToken = authentication.getName() + "/" + role + "/" + generatedToken;
+        log.info(createdToken);
+        return generatedToken;
     }
 
 }
