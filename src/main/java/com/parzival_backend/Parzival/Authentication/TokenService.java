@@ -30,7 +30,7 @@ public class TokenService {
                 .claim("role", role)
                 .build();
         String generatedToken = this.jwtEncoder.encode(JwtEncoderParameters.from(claimsSet)).getTokenValue();
-        String createdToken = authentication.getName() + "/" + role + "/" + generatedToken;
+        String createdToken = "Login : " + authentication.getName() + "/" + role + "/" + generatedToken;
         log.info(createdToken);
         return generatedToken;
     }

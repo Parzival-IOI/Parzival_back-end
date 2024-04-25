@@ -43,6 +43,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 public class SecurityConfig {
     private final RsaKeyProperties rsaKeyProperties;
     private final UserService userService;
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
@@ -63,7 +64,7 @@ public class SecurityConfig {
                 .authenticationManager(authenticationManager)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/token").permitAll()
-                        .requestMatchers("/api/user/create").hasRole(String.valueOf(Role.ADMIN))
+                        .requestMatchers("/api/user/**").hasRole(String.valueOf(Role.ADMIN))
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -78,8 +79,8 @@ public class SecurityConfig {
     static class CustomAuthenticationConverter implements Converter<Jwt, AbstractAuthenticationToken> {
         public AbstractAuthenticationToken convert(Jwt jwt) {
             Collection<String> authorities = jwt.getClaimAsStringList("role");
-            String Login = "Login : " + jwt.getSubject() + " " + jwt.getClaimAsStringList("role");
-            log.info(Login);
+            String validation = "Validation : " + jwt.getSubject() + " " + jwt.getClaimAsStringList("role");
+            log.info(validation);
             if(authorities == null || authorities.isEmpty()) {
                 return new JwtAuthenticationToken(jwt);
             }
